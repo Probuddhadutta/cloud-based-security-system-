@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Security System</title>
+</head>
+<body>
+  <img id="logo" width="100">
+  <h2>Video Footage</h2>
+  <ul id="video-list"></ul>
+  <video controls width="640" id="player"></video>
+  <script>
+    fetch('/logo')
+      .then(res => res.json())
+      .then(data => document.getElementById('logo').src = data.url);
+
+    fetch('/videos')
+      .then(res => res.json())
+      .then(videos => {
+        const list = document.getElementById('video-list');
+        videos.forEach(video => {
+          const li = document.createElement('li');
+          li.textContent = video;
+          li.onclick = () => {
+            const url = `https://yourname-surveillance-footage.s3.amazonaws.com/${video}`;
+            document.getElementById('player').src = url;
+          };
+          list.appendChild(li);
+        });
+      });
+  </script>
+</body>
+</html>
